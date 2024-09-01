@@ -1,5 +1,3 @@
-version: '3.8'
-
 networks:
   default:
 
@@ -13,8 +11,11 @@ services:
     env_file: ./.env
     environment:
       MYSQL_ROOT_PASSWORD: $DB_PASSWORD
+      MYSQL_DATABASE: $DB_NAME
+      MYSQL_PASSWORD: $DB_PASSWORD
+      MYSQL_USER: $DB_USERNAME
     ports:
-      - $DB_LOCAL_PORT:$DB_PORT
+      - 127.0.0.1:$DB_LOCAL_PORT:$DB_PORT
     volumes:
       - database-vlm:/var/lib/mysql:rw
       - ./database:/docker-entrypoint-initdb.d/
@@ -23,7 +24,27 @@ services:
 
   app:
     container_name: app
-    image: 
+    depends_on:
+      - database
+    build: ./app
+    restart: unless-stopped
+    env_file:
+      - ./.env
+    expose:
+      - $APP_PORT
+    ports:
+      - $APP_LOCAL_PORT:$APP_PORT
+    environment:
+      - DB_HOST=$DB_HOST
+      - DB_USERNAME=$DB_USERNAME
+      - DB_PORT=$DB_PORT
+      - DB_PASSWORD=$DB_PASSWORD
+      - DB_NAME=$DB_NAME
+    volumes:
+      - ./app:/app
+      - /app/node_modules
+    networks:
+      - default
 
 volumes:
   database-vlm:

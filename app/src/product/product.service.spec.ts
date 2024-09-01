@@ -22,34 +22,32 @@ describe('ProductService', () => {
       price: 200,
       currency: {
         icon: '€',
-        name: 'EUR'
+        name: 'EUR',
       },
       isOnSale: false,
       description: 'This is a test description of a product',
       length: 300,
       weight: 300,
-      images: ['']
-    })
+      images: [''],
+    });
 
     expect(newProduct).toEqual({
       name: 'TestProduct',
       price: 200,
       currency: {
         icon: '€',
-        name: 'EUR'
+        name: 'EUR',
       },
       isOnSale: false,
       description: 'This is a test description of a product',
       length: 300,
       weight: 300,
-      images: []
-    })
-  })
+      images: [],
+    });
+  });
 
   it('should find product by ID', () => {
     const id = 1;
     const foundProduct = service.findOne(id);
-
-    
-  })
+  });
 });
