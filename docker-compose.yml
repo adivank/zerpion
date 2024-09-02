@@ -42,7 +42,6 @@ services:
       - DB_NAME=$DB_NAME
     volumes:
       - ./app:/app
-      - /app/node_modules
     networks:
       - default
 
