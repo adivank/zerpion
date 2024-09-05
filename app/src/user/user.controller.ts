@@ -17,6 +17,12 @@ export class UserController {
     return this.userService.findAll();
   }
 
+  @Post('email')
+  findOneByEmail(@Body() body: {email: string}) {
+    return this.userService.findOneByEmail(body.email);
+  }
+
+
   @Get(':nickname')
   findOne(@Param('nickname') nickname: string) {
     return this.userService.findOne(nickname);
