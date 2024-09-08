@@ -5,11 +5,13 @@ import Sidebar from "./components/Sidebar";
 export interface LayoutProps extends React.HTMLAttributes<HTMLDivElement> {}
 const Layout = ({children}: LayoutProps) => {
     return (<>
-        <Header></Header>
         <Sidebar></Sidebar>
-        <main>
-            {children}
-        </main>
+        <div className="pl-20">
+            <Header></Header>
+            <main>
+                {children}
+            </main>
+        </div>
     </>)
 };
 
