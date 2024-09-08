@@ -25,8 +25,8 @@ const Sidebar = ({className}: SidebarProps) => {
                     <FontAwesomeIcon className="mx-auto block" icon={faChartLine} />
                 </div>
             </div>
-            <div className="py-4 hover:bg-slate-100 rounded-sm mx-3 mt-auto mb-4">
-                <FontAwesomeIcon className="mx-auto block" icon={faGear} />
+            <div className="py-4 hover:bg-slate-100 rounded-sm mx-3 group mt-auto mb-4">
+                <FontAwesomeIcon className="mx-auto block group-hover:rotate-90 duration-300" icon={faGear} />
             </div>
         </div>
     )

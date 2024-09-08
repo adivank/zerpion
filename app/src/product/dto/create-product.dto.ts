@@ -18,5 +18,7 @@ export class CreateProductDto {
   description: string;
   length: number;
   weight: number;
+
+  @IsNotEmpty()
   sku: string;
 }
