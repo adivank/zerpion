@@ -11,11 +11,5 @@ export class Product {
   @Column()
   price: number;
   @Column()
-  isOnSale: boolean;
-  @Column()
   description: string;
-  @Column()
-  length: number;
-  @Column()
-  weight: number;
 }

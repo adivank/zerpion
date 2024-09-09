@@ -4,6 +4,7 @@ import { UpdateProductDto } from './dto/update-product.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Product } from './entities/product.entity';
+import { generateRandomString } from 'src/utils/file-upload.utils';
 
 @Injectable()
 export class ProductService {
@@ -12,16 +13,12 @@ export class ProductService {
     private productsRepository: Repository<Product>,
   ) {}
   async create(createProductDto: CreateProductDto) {
-    const { name, price, sku, isOnSale, description, length, weight } =
-      createProductDto;
+    const { name, price, description } = createProductDto;
     const newProduct = {
       name,
       price,
-      isOnSale,
       description,
-      length,
-      weight,
-      sku,
+      sku: generateRandomString(8).toUpperCase(),
     };
 
     const product = await this.productsRepository.save(newProduct);
