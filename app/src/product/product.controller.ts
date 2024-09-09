@@ -15,10 +15,14 @@ import { UpdateProductDto } from './dto/update-product.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { editFileName, imageFileFilter } from 'src/utils/file-upload.utils';
+import { ImageService } from 'src/image/image.service';
 
 @Controller('product')
 export class ProductController {
-  constructor(private readonly productService: ProductService) {}
+  constructor(
+    private readonly productService: ProductService,
+    private readonly imagesService: ImageService,
+  ) {}
 
   @Post()
   @UseInterceptors(
@@ -34,13 +38,14 @@ export class ProductController {
     @Body() body: CreateProductDto,
     @UploadedFile() file: Express.Multer.File,
   ) {
-    console.log(body, 'body');
-    console.log(file, 'file');
+    // console.log(body, 'body');
+    // console.log(file, 'file');
+    return this.imagesService.saveImage(file);
     // return {
     //   body,
     //   file: file.buffer.toString(),
     // };
-    return this.productService.create(body);
+    // return this.productService.create(body);
   }
 
   @Get()

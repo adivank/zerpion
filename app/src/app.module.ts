@@ -9,6 +9,7 @@ import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { ImageModule } from './image/image.module';
 // import { APP_GUARD } from '@nestjs/core';
 // import { JwtAuthGuard } from './auth/jwt-auth.guard';
 
@@ -32,6 +33,7 @@ import { join } from 'path';
     CategoryModule,
     AuthModule,
     UserModule,
+    ImageModule,
   ],
   controllers: [AppController],
   providers: [

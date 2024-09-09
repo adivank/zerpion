@@ -12,6 +12,7 @@ export class ProductService {
     @InjectRepository(Product)
     private productsRepository: Repository<Product>,
   ) {}
+
   async create(createProductDto: CreateProductDto) {
     const { name, price, description } = createProductDto;
     const newProduct = {
