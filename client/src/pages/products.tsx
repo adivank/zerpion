@@ -18,7 +18,9 @@ function Products() {
 
   return (
     <>
-      <AddProduct></AddProduct>
+      <div className="py-4 flex justify-end">
+        <AddProduct></AddProduct>
+      </div>
       {products && <ProductList products={products}></ProductList>}
     </>
   );

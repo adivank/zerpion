@@ -38,9 +38,21 @@ export interface ProductListProps extends React.HTMLAttributes<HTMLDivElement> {
     isOnSale: boolean;
     width: number;
     length: number;
+    createdAt: string;
+    updatedAt: string;
+    images: {
+      url: string;
+    }[];
   }[];
 }
 export default function ProductList({ className, products }: ProductListProps) {
+  const createDateString = (dateStr: string) => {
+    const newDate = new Date(dateStr);
+
+    return `${newDate.getHours()}:${newDate.getMinutes()} / ${newDate.getDate()}.${
+      newDate.getMonth() + 1
+    }`;
+  };
   return (
     <Card className={cn("", className)}>
       <CardHeader>
@@ -73,7 +85,7 @@ export default function ProductList({ className, products }: ProductListProps) {
                 <TableRow key={product.sku}>
                   <TableCell className="hidden sm:table-cell">
                     <img
-                      src="https://picsum.photos/200/300"
+                      src={product.images[0].url}
                       alt="Product image"
                       className="aspect-square rounded-md object-cover"
                       height="64"
@@ -92,7 +104,7 @@ export default function ProductList({ className, products }: ProductListProps) {
                     {product.price}€
                   </TableCell>
                   <TableCell className="hidden md:table-cell">
-                    2023-07-12 10:42 AM
+                    {createDateString(product.createdAt)}
                   </TableCell>
                   <TableCell>
                     <DropdownMenu>

@@ -17,17 +17,20 @@ import { Textarea } from "../ui/textarea";
 import { DialogDescription } from "@radix-ui/react-dialog";
 import { useState } from "react";
 import axios from "axios";
+import { useToast } from "@/hooks/use-toast";
 
 const formSchema = z.object({
   name: z.string(),
   description: z.string(),
   price: z.string(),
+  category: z.string(),
   file: z.instanceof(File).refine((file) => file.size < 10000000, {
     message: "File size must be below 10MB",
   }),
 });
 
 function AddProduct() {
+  const { toast } = useToast();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -48,20 +51,14 @@ function AddProduct() {
         headers: {
           "Content-Type": "multipart/form-data",
         },
-      });
-
-      // await fetch("http://localhost:3001/product", {
-      //   method: "POST",
-      //   body: formData,
-      //   // headers: {
-      //   //   "Content-Type": "application/json",
-      //   // },
-      // })
-      //   .then((res) => res.json())
-      //   .then((data) => {
-      //     console.log(data);
-      //     setOpen(false);
-      //   });
+      })
+        .then((res) => {
+          setOpen(false);
+          return toast({
+            title: "Product added",
+          });
+        })
+        .catch((e) => console.error(e));
     } catch (e) {
       console.error(e);
     }
@@ -80,21 +77,6 @@ function AddProduct() {
           <DialogDescription>Adds a product to the database</DialogDescription>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} id="add_product">
-              {/* <FormField
-                control={form.control}
-                name="sku"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>SKU</FormLabel>
-                    <FormControl>
-                      <Input placeholder="A23FE45A" {...field}></Input>
-                    </FormControl>
-                    <FormDescription>
-                      This is the ID of a product
-                    </FormDescription>
-                  </FormItem>
-                )}
-              ></FormField> */}
               <FormField
                 control={form.control}
                 name="name"
@@ -118,6 +100,18 @@ function AddProduct() {
                         placeholder="Product description..."
                         {...field}
                       ></Textarea>
+                    </FormControl>
+                  </FormItem>
+                )}
+              ></FormField>
+              <FormField
+                control={form.control}
+                name="category"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Category</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Category" {...field}></Input>
                     </FormControl>
                   </FormItem>
                 )}

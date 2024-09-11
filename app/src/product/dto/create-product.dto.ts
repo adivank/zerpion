@@ -1,4 +1,6 @@
-import { IsNotEmpty } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsArray, IsNotEmpty, ValidateNested } from 'class-validator';
+import { ImageDTO } from './image.dto';
 
 type Currency = {
   name: string;
@@ -12,4 +14,8 @@ export class CreateProductDto {
   price: number;
   @IsNotEmpty()
   description: string;
+  @ValidateNested()
+  @Type(() => ImageDTO)
+  images: ImageDTO[];
+  category: string;
 }
