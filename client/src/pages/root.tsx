@@ -6,10 +6,8 @@ function Root() {
     <>
       <Sidebar></Sidebar>
       <div className="pl-20">
-        <main>
-          <div className="max-w-[1500px] mx-auto">
-            <Outlet />
-          </div>
+        <main className="max-w-[1500px] mx-auto">
+          <Outlet />
         </main>
       </div>
     </>

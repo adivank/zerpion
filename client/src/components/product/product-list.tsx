@@ -28,12 +28,14 @@ import {
 } from "@/components/ui/table";
 import React from "react";
 import { cn } from "@/lib/utils";
+import axios from "axios";
 
 export interface ProductListProps extends React.HTMLAttributes<HTMLDivElement> {
   productCount: number;
   products: {
     sku: string;
     name: string;
+    id: string;
     description: string;
     price: string;
     isOnSale: boolean;
@@ -41,6 +43,7 @@ export interface ProductListProps extends React.HTMLAttributes<HTMLDivElement> {
     length: number;
     createdAt: string;
     updatedAt: string;
+    category: string;
     images: {
       url: string;
     }[];
@@ -57,6 +60,11 @@ export default function ProductList({
     return `${newDate.getHours()}:${newDate.getMinutes()} / ${newDate.getDate()}.${
       newDate.getMonth() + 1
     }`;
+  };
+
+  const deleteProduct = async (id: string) => {
+    const response = await axios.delete(`http://127.0.0.1:3001/product/${id}`);
+    console.log(response);
   };
   return (
     <Card className={cn("", className)}>
@@ -75,7 +83,7 @@ export default function ProductList({
               </TableHead>
               <TableHead>SKU</TableHead>
               <TableHead>Name</TableHead>
-              <TableHead>Status</TableHead>
+              <TableHead>Category</TableHead>
               <TableHead>Description</TableHead>
               <TableHead className="hidden md:table-cell">Price</TableHead>
               <TableHead className="hidden md:table-cell">Created at</TableHead>
@@ -102,7 +110,7 @@ export default function ProductList({
                     {product.name}
                   </TableCell>
                   <TableCell>
-                    <Badge variant="outline">Active</Badge>
+                    <Badge variant="outline">{product.category}</Badge>
                   </TableCell>
                   <TableCell>{product.description}</TableCell>
                   <TableCell className="hidden md:table-cell">
@@ -126,7 +134,13 @@ export default function ProductList({
                       <DropdownMenuContent align="end">
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
                         <DropdownMenuItem>Edit</DropdownMenuItem>
-                        <DropdownMenuItem>Delete</DropdownMenuItem>
+                        <DropdownMenuItem
+                          onClick={() => {
+                            deleteProduct(product.id);
+                          }}
+                        >
+                          Delete
+                        </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </TableCell>
