@@ -30,7 +30,7 @@ export class ProductService {
   }
 
   findAll() {
-    return this.productsRepository.find();
+    return this.productsRepository.findAndCount();
   }
 
   findOne(id: string) {

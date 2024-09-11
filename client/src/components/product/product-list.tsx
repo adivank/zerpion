@@ -30,6 +30,7 @@ import React from "react";
 import { cn } from "@/lib/utils";
 
 export interface ProductListProps extends React.HTMLAttributes<HTMLDivElement> {
+  productCount: number;
   products: {
     sku: string;
     name: string;
@@ -45,7 +46,11 @@ export interface ProductListProps extends React.HTMLAttributes<HTMLDivElement> {
     }[];
   }[];
 }
-export default function ProductList({ className, products }: ProductListProps) {
+export default function ProductList({
+  className,
+  products,
+  productCount,
+}: ProductListProps) {
   const createDateString = (dateStr: string) => {
     const newDate = new Date(dateStr);
 
@@ -132,7 +137,8 @@ export default function ProductList({ className, products }: ProductListProps) {
       </CardContent>
       <CardFooter>
         <div className="text-xs text-muted-foreground">
-          Showing <strong>1-10</strong> of <strong>32</strong> products
+          Showing <strong>1-10</strong> of <strong>{productCount}</strong>{" "}
+          products
         </div>
       </CardFooter>
     </Card>
