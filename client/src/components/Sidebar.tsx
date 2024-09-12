@@ -10,16 +10,22 @@ import {
   faHouse,
   faUsers,
 } from "@fortawesome/free-solid-svg-icons";
+import {
+  Tooltip,
+  TooltipProvider,
+  TooltipContent,
+  TooltipTrigger,
+} from "./ui/tooltip";
 
 const navigation = {
   className: "py-4 hover:bg-slate-100 rounded-sm mx-3",
   activeClass: "bg-slate-200 py-4 rounded-sm mx-3",
   paths: [
-    { path: "/", icon: faHouse },
-    { path: "products", icon: faCartShopping },
-    { path: "orders", icon: faBoxesStacked },
-    { path: "customers", icon: faUsers },
-    { path: "analytics", icon: faChartLine },
+    { path: "/", icon: faHouse, name: "Homepage" },
+    { path: "products", icon: faCartShopping, name: "Products" },
+    { path: "orders", icon: faBoxesStacked, name: "Orders" },
+    { path: "customers", icon: faUsers, name: "Customers" },
+    { path: "analytics", icon: faChartLine, name: "Analytics" },
   ],
 };
 
@@ -39,14 +45,25 @@ const Sidebar = ({ className }: SidebarProps) => {
         {navigation.paths.map((navItem) => (
           <NavLink
             to={navItem.path}
-            key={navItem.path}
             className={({ isActive }) =>
               isActive
-                ? "py-4 bg-slate-200 rounded-sm mx-3"
-                : "py-4 hover:bg-slate-100 rounded-sm mx-3"
+                ? "bg-slate-200 rounded-sm mx-3 flex justify-center"
+                : "hover:bg-slate-100 rounded-sm mx-3 flex justify-center"
             }
           >
-            <FontAwesomeIcon className="mx-auto block" icon={navItem.icon} />
+            <TooltipProvider delayDuration={100} key={navItem.path}>
+              <Tooltip>
+                <TooltipTrigger>
+                  <FontAwesomeIcon
+                    className="mx-auto block p-4"
+                    icon={navItem.icon}
+                  />
+                </TooltipTrigger>
+                <TooltipContent side="right">
+                  <p>{navItem.name}</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           </NavLink>
         ))}
         {/* <NavLink to={"/"} className={}>
