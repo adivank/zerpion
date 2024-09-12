@@ -45,13 +45,14 @@ const Sidebar = ({ className }: SidebarProps) => {
         {navigation.paths.map((navItem) => (
           <NavLink
             to={navItem.path}
+            key={navItem.path}
             className={({ isActive }) =>
               isActive
                 ? "bg-slate-200 rounded-sm mx-3 flex justify-center"
                 : "hover:bg-slate-100 rounded-sm mx-3 flex justify-center"
             }
           >
-            <TooltipProvider delayDuration={100} key={navItem.path}>
+            <TooltipProvider delayDuration={100}>
               <Tooltip>
                 <TooltipTrigger>
                   <FontAwesomeIcon

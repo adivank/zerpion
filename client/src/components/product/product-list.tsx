@@ -30,24 +30,30 @@ import React from "react";
 import { cn } from "@/lib/utils";
 import axios from "axios";
 
+export interface ProductProps {
+  sku: string;
+  name: string;
+  id: string;
+  description: string;
+  price: string;
+  isOnSale: boolean;
+  width: number;
+  length: number;
+  createdAt: string;
+  updatedAt: string;
+  category: string;
+  images: {
+    url: string;
+  }[];
+  thumbnail: {
+    url: string;
+    imageName: string;
+  };
+}
+
 export interface ProductListProps extends React.HTMLAttributes<HTMLDivElement> {
   productCount: number;
-  products: {
-    sku: string;
-    name: string;
-    id: string;
-    description: string;
-    price: string;
-    isOnSale: boolean;
-    width: number;
-    length: number;
-    createdAt: string;
-    updatedAt: string;
-    category: string;
-    images: {
-      url: string;
-    }[];
-  }[];
+  products: ProductProps[];
 }
 export default function ProductList({
   className,
@@ -98,8 +104,8 @@ export default function ProductList({
                 <TableRow key={product.sku}>
                   <TableCell className="hidden sm:table-cell">
                     <img
-                      src={product.images[0].url}
-                      alt="Product image"
+                      src={product.thumbnail.url}
+                      alt={product.thumbnail.imageName}
                       className="aspect-square rounded-md object-cover"
                       height="64"
                       width="64"

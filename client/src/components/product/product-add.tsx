@@ -15,21 +15,26 @@ import { Form, FormControl, FormField, FormItem, FormLabel } from "../ui/form";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { DialogDescription } from "@radix-ui/react-dialog";
-import { useState } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import axios from "axios";
 import { useToast } from "@/hooks/use-toast";
+import { ProductProps } from "./product-list";
 
 const formSchema = z.object({
   name: z.string(),
   description: z.string(),
   price: z.string(),
   category: z.string(),
-  file: z.instanceof(File).refine((file) => file.size < 10000000, {
+  thumbnail: z.instanceof(File).refine((file) => file.size < 10000000, {
     message: "File size must be below 10MB",
   }),
 });
 
-function AddProduct() {
+export interface AddProductProps extends React.HTMLAttributes<HTMLDivElement> {
+  products: ProductProps[];
+  setProducts: Dispatch<SetStateAction<ProductProps[]>>;
+}
+function AddProduct({ setProducts, products }: AddProductProps) {
   const { toast } = useToast();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -37,31 +42,37 @@ function AddProduct() {
       name: "",
       description: "",
       price: "",
-      file: undefined,
+      thumbnail: undefined,
     },
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const formData = new FormData(document.querySelector("form")!);
-    try {
-      await axios({
-        method: "post",
-        url: "http://localhost:3001/product",
-        data: formData,
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
+    await axios({
+      method: "post",
+      url: "http://localhost:3001/product",
+      data: formData,
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    })
+      .then((res) => {
+        console.log("still in response");
+        setProducts([...products, res.data]);
+        setOpen(false);
+        return toast({
+          title: "Product added",
+          description: `Product ${res.data.name} has been added to the database.`,
+        });
       })
-        .then((res) => {
-          setOpen(false);
-          return toast({
-            title: "Product added",
-          });
-        })
-        .catch((e) => console.error(e));
-    } catch (e) {
-      console.error(e);
-    }
+      .catch((e) => {
+        console.log("in an error");
+        return toast({
+          variant: "destructive",
+          title: "Uh oh! Something went wrong.",
+          description: "There was a problem with the server",
+        });
+      });
   }
 
   const [open, setOpen] = useState(false);
@@ -130,10 +141,10 @@ function AddProduct() {
               ></FormField>
               <FormField
                 control={form.control}
-                name="file"
+                name="thumbnail"
                 render={({ field: { value, onChange, ...fieldProps } }) => (
                   <FormItem>
-                    <FormLabel>Images</FormLabel>
+                    <FormLabel>Thumbnail</FormLabel>
                     <FormControl>
                       <Input
                         id="file_input"

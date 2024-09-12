@@ -1,14 +1,14 @@
-import ProductList from "@/components/product/product-list";
+import ProductList, { ProductProps } from "@/components/product/product-list";
 import { AddProduct } from "@/components/product/product-add";
 import { useEffect, useState } from "react";
 
 const fetchProducts = async () => {
-  const response = await fetch("http://localhost:3001/product");
+  const response = await fetch("http://127.0.0.1:3001/product");
   return response;
 };
 
 function Products() {
-  const [products, setProducts] = useState(null);
+  const [products, setProducts] = useState<ProductProps[]>([]);
   const [productCount, setProductCount] = useState(0);
 
   useEffect(() => {
@@ -24,7 +24,7 @@ function Products() {
   return (
     <>
       <div className="py-4 flex justify-end">
-        <AddProduct></AddProduct>
+        <AddProduct setProducts={setProducts} products={products}></AddProduct>
       </div>
       {products && (
         <ProductList

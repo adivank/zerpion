@@ -8,14 +8,20 @@ import {
   Delete,
   UseInterceptors,
   UploadedFile,
+  UploadedFiles,
 } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
-import { FileInterceptor } from '@nestjs/platform-express';
+import {
+  FileFieldsInterceptor,
+  FileInterceptor,
+  FilesInterceptor,
+} from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { editFileName, imageFileFilter } from 'src/utils/file-upload.utils';
 import { ProductEntity } from './entities/product.entity';
+import { ProductThumbnailEntity } from './entities/product-thumbnail.entity';
 import { ProductImageEntity } from './entities/product-image.entity';
 
 @Controller('product')
@@ -24,32 +30,66 @@ export class ProductController {
 
   @Post()
   @UseInterceptors(
-    FileInterceptor('file', {
-      storage: diskStorage({
-        destination: './uploads',
-        filename: editFileName,
-      }),
-      fileFilter: imageFileFilter,
-    }),
+    // FileInterceptor('thumbnail', {
+    //   storage: diskStorage({
+    //     destination: './uploads/thumbnails',
+    //     filename: editFileName,
+    //   }),
+    //   fileFilter: imageFileFilter,
+    // }),
+    // FilesInterceptor('images[]', 20, {
+    //   storage: diskStorage({
+    //     destination: './uploads/images',
+    //     filename: editFileName,
+    //   }),
+    //   fileFilter: imageFileFilter,
+    // }),
+    FileFieldsInterceptor(
+      [
+        { name: 'thumbnail', maxCount: 1 },
+        { name: 'images', maxCount: 20 },
+      ],
+      {
+        storage: diskStorage({
+          destination: (req, file, cb) => {
+            if (file.fieldname === 'thumbnail')
+              return cb(null, './uploads/thumbnails');
+            return cb(null, './uploads/images');
+          },
+          filename: editFileName,
+        }),
+        fileFilter: imageFileFilter,
+      },
+    ),
   )
   async create(
     @Body() body: CreateProductDto,
-    @UploadedFile() file: Express.Multer.File,
+    @UploadedFiles()
+    files: { images: Express.Multer.File[]; thumbnail: Express.Multer.File },
   ) {
     const { name, description, price, category } = body;
-    const { path, originalname } = file;
+    const thumbnailPath = files.thumbnail[0].path;
+    const thumbnailName = files.thumbnail[0].filename;
 
-    const image = new ProductImageEntity();
-    image.url = `http://localhost:3001/${path}`;
+    const thumbnail = new ProductThumbnailEntity();
+    thumbnail.url = `http://127.0.0.1:3001/${thumbnailPath}`;
+    thumbnail.imageName = thumbnailName;
 
     const newProduct = new ProductEntity();
     newProduct.name = name;
     newProduct.description = description;
     newProduct.price = price;
     newProduct.category = category;
-    newProduct.images = [image];
+    newProduct.thumbnail = thumbnail;
+    newProduct.images = [];
 
-    this.productService.create(newProduct);
+    files.images.forEach((fileImage) => {
+      const productImage = new ProductImageEntity();
+      productImage.url = `http://127.0.0.1:3001/${fileImage.path}`;
+      newProduct.images.push(productImage);
+    });
+
+    return this.productService.create(newProduct);
   }
 
   @Get()

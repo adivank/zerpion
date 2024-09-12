@@ -6,7 +6,10 @@ import {
   OneToMany,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToOne,
+  JoinColumn,
 } from 'typeorm';
+import { ProductThumbnailEntity } from './product-thumbnail.entity';
 
 @Entity({ name: 'products' })
 export class ProductEntity {
@@ -22,10 +25,10 @@ export class ProductEntity {
   @Column({ name: 'price', nullable: false })
   price: number;
 
-  @Column({ name: 'category', default: '' })
+  @Column({ name: 'category', default: '', charset: 'utf8mb4' })
   category: string;
 
-  @Column({ name: 'description' })
+  @Column({ name: 'description', charset: 'utf8mb4' })
   description: string;
 
   @OneToMany(() => ProductImageEntity, (productImage) => productImage.product, {
@@ -33,6 +36,10 @@ export class ProductEntity {
     eager: true,
   })
   images: ProductImageEntity[];
+
+  @OneToOne(() => ProductThumbnailEntity, { cascade: true, eager: true })
+  @JoinColumn()
+  thumbnail: ProductThumbnailEntity;
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: string;
