@@ -16,7 +16,7 @@ export class ProductEntity {
   @Column({ name: 'sku' })
   sku: string;
 
-  @Column({ name: 'name', nullable: false })
+  @Column({ name: 'name', nullable: false, charset: 'utf8mb4' })
   name: string;
 
   @Column({ name: 'price', nullable: false })

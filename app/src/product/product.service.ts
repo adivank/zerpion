@@ -14,16 +14,12 @@ export class ProductService {
   ) {}
 
   async create(createProductDto: CreateProductDto) {
-    const { images, name, price, category, description } = createProductDto;
-    console.log(images);
     const newProduct = {
-      name,
-      price,
-      description,
-      category,
       sku: generateRandomString(8).toUpperCase(),
-      images,
+      ...createProductDto,
     };
+
+    console.log(newProduct);
 
     const product = await this.productsRepository.save(newProduct);
     return product;

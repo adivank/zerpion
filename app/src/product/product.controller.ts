@@ -36,7 +36,6 @@ export class ProductController {
     @Body() body: CreateProductDto,
     @UploadedFile() file: Express.Multer.File,
   ) {
-    console.log('hey');
     const { name, description, price, category } = body;
     const { path, originalname } = file;
 
@@ -50,23 +49,7 @@ export class ProductController {
     newProduct.category = category;
     newProduct.images = [image];
 
-    console.log(newProduct);
-
     this.productService.create(newProduct);
-
-    // const { name, category, price, description } = body;
-    // const newProduct = {
-    //   name,
-    //   price,
-    //   description,
-    //   category,
-    //   images: [],
-    // };
-    // newProduct.images.push(file);
-    // const productData = await this.productService.create(newProduct);
-    // return {
-    //   ...productData,
-    // };
   }
 
   @Get()
