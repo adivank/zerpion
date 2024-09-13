@@ -3,7 +3,7 @@ import { AddProduct } from "@/components/product/product-add";
 import { useEffect, useState } from "react";
 
 const fetchProducts = async () => {
-  const response = await fetch("http://127.0.0.1:3001/product");
+  const response = await fetch(`${import.meta.env.VITE_API_URL}/product`);
   return response;
 };
 

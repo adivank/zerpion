@@ -69,7 +69,9 @@ export default function ProductList({
   };
 
   const deleteProduct = async (id: string) => {
-    const response = await axios.delete(`http://127.0.0.1:3001/product/${id}`);
+    const response = await axios.delete(
+      `${import.meta.env.VITE_API_URL}/product/${id}`
+    );
     console.log(response);
   };
   return (

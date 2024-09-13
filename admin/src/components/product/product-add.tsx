@@ -28,6 +28,7 @@ const formSchema = z.object({
   thumbnail: z.instanceof(File).refine((file) => file.size < 10000000, {
     message: "File size must be below 10MB",
   }),
+  images: z.array(z.instanceof(File).refine((file) => file.size < 10000000)),
 });
 
 export interface AddProductProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -42,7 +43,9 @@ function AddProduct({ setProducts, products }: AddProductProps) {
       name: "",
       description: "",
       price: "",
+      category: "",
       thumbnail: undefined,
+      images: undefined,
     },
   });
 
@@ -57,7 +60,6 @@ function AddProduct({ setProducts, products }: AddProductProps) {
       },
     })
       .then((res) => {
-        console.log("still in response");
         setProducts([...products, res.data]);
         setOpen(false);
         return toast({
@@ -66,7 +68,7 @@ function AddProduct({ setProducts, products }: AddProductProps) {
         });
       })
       .catch((e) => {
-        console.log("in an error");
+        console.error(e);
         return toast({
           variant: "destructive",
           title: "Uh oh! Something went wrong.",
@@ -147,13 +149,31 @@ function AddProduct({ setProducts, products }: AddProductProps) {
                     <FormLabel>Thumbnail</FormLabel>
                     <FormControl>
                       <Input
-                        id="file_input"
-                        placeholder="Browse images..."
+                        placeholder="Browse thumbnail"
                         {...fieldProps}
-                        // multiple
                         type="file"
                         onChange={(event) =>
                           onChange(event.target.files && event.target.files[0])
+                        }
+                      ></Input>
+                    </FormControl>
+                  </FormItem>
+                )}
+              ></FormField>
+              <FormField
+                control={form.control}
+                name="images"
+                render={({ field: { value, onChange, ...fieldProps } }) => (
+                  <FormItem>
+                    <FormLabel>Images</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="Browse images..."
+                        {...fieldProps}
+                        multiple
+                        type="file"
+                        onChange={(event) =>
+                          onChange([...Array.from(event.target.files ?? [])])
                         }
                       ></Input>
                     </FormControl>

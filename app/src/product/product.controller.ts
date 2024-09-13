@@ -30,20 +30,6 @@ export class ProductController {
 
   @Post()
   @UseInterceptors(
-    // FileInterceptor('thumbnail', {
-    //   storage: diskStorage({
-    //     destination: './uploads/thumbnails',
-    //     filename: editFileName,
-    //   }),
-    //   fileFilter: imageFileFilter,
-    // }),
-    // FilesInterceptor('images[]', 20, {
-    //   storage: diskStorage({
-    //     destination: './uploads/images',
-    //     filename: editFileName,
-    //   }),
-    //   fileFilter: imageFileFilter,
-    // }),
     FileFieldsInterceptor(
       [
         { name: 'thumbnail', maxCount: 1 },
@@ -72,7 +58,7 @@ export class ProductController {
     const thumbnailName = files.thumbnail[0].filename;
 
     const thumbnail = new ProductThumbnailEntity();
-    thumbnail.url = `http://127.0.0.1:3001/${thumbnailPath}`;
+    thumbnail.url = `${process.env.API_URL}/${thumbnailPath}`;
     thumbnail.imageName = thumbnailName;
 
     const newProduct = new ProductEntity();
@@ -85,7 +71,7 @@ export class ProductController {
 
     files.images.forEach((fileImage) => {
       const productImage = new ProductImageEntity();
-      productImage.url = `http://127.0.0.1:3001/${fileImage.path}`;
+      productImage.url = `${process.env.API_URL}/${fileImage.path}`;
       newProduct.images.push(productImage);
     });
 
