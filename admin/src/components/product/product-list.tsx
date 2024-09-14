@@ -29,6 +29,7 @@ import {
 import React from "react";
 import { cn } from "@/lib/utils";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 export interface ProductProps {
   sku: string;
@@ -141,7 +142,12 @@ export default function ProductList({
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuItem>Edit</DropdownMenuItem>
+                        <Link
+                          to={`/products/${product.id}`}
+                          className="cursor-pointer"
+                        >
+                          <DropdownMenuItem>Edit</DropdownMenuItem>
+                        </Link>
                         <DropdownMenuItem
                           onClick={() => {
                             deleteProduct(product.id);

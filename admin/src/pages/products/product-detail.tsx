@@ -84,8 +84,8 @@ function ProductDetail() {
       </div>
       <ProductDetailField
         className="border-t-0"
-        title="General Information"
-        description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus labore commodi aliquam placeat officiis veniam voluptates corrupti fugiat officia voluptatem."
+        title="Product ID"
+        description="This is a Product ID as seen in the database collection. This is unique to every product, is assigned when product is added to the database and is impossible to change. You can use it to search for products in the database."
         value={product.id}
       />
       <ProductDetailField

@@ -58,7 +58,7 @@ export class ProductController {
     const thumbnailName = files.thumbnail[0].filename;
 
     const thumbnail = new ProductThumbnailEntity();
-    thumbnail.url = `${process.env.API_URL}/${thumbnailPath}`;
+    thumbnail.url = `${process.env.APP_URL}/${thumbnailPath}`;
     thumbnail.imageName = thumbnailName;
 
     const newProduct = new ProductEntity();
@@ -71,7 +71,7 @@ export class ProductController {
 
     files.images.forEach((fileImage) => {
       const productImage = new ProductImageEntity();
-      productImage.url = `${process.env.API_URL}/${fileImage.path}`;
+      productImage.url = `${process.env.APP_URL}/${fileImage.path}`;
       newProduct.images.push(productImage);
     });
 
