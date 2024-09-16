@@ -2,7 +2,6 @@ networks:
   default:
 
 services:
-
   database:
     container_name: database
     image: mysql:5.7
@@ -22,28 +21,30 @@ services:
     networks:
       - default
 
-  app:
-    container_name: app
-    depends_on:
-      - database
-    build: ./app
-    restart: unless-stopped
-    env_file:
-      - ./.env
-    expose:
-      - $APP_PORT
-    ports:
-      - $APP_LOCAL_PORT:$APP_PORT
-    environment:
-      - DB_HOST=$DB_HOST
-      - DB_USERNAME=$DB_USERNAME
-      - DB_PORT=$DB_PORT
-      - DB_PASSWORD=$DB_PASSWORD
-      - DB_NAME=$DB_NAME
-    volumes:
-      - ./app:/app
-    networks:
-      - default
+  # api:
+  #   container_name: api
+  #   depends_on:
+  #     - database
+  #   build:
+  #     context: .
+  #     dockerfile: ./apps/api/Dockerfile
+  #   restart: unless-stopped
+  #   env_file:
+  #     - ./.env
+  #   expose:
+  #     - $APP_PORT
+  #   ports:
+  #     - $APP_LOCAL_PORT:$APP_PORT
+  #   environment:
+  #     - DB_HOST=$DB_HOST
+  #     - DB_USERNAME=$DB_USERNAME
+  #     - DB_PORT=$DB_PORT
+  #     - DB_PASSWORD=$DB_PASSWORD
+  #     - DB_NAME=$DB_NAME
+  #   volumes:
+  #     - ./app:/app
+  #   networks:
+  #     - default
 
 volumes:
   database-vlm:

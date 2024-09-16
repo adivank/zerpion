@@ -1,0 +1,13 @@
+{
+  "name": "ecom-template",
+  "packageManager": "pnpm@9.4.0",
+  "version": "1.0.0",
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "turbo": "^2.1.2"
+  }
+}
