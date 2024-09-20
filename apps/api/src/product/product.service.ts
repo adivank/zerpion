@@ -19,8 +19,6 @@ export class ProductService {
       ...createProductDto,
     };
 
-    console.log(newProduct);
-
     const product = await this.productsRepository.save(newProduct);
     return product;
   }

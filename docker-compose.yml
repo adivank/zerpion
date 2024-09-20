@@ -14,7 +14,7 @@ services:
       MYSQL_PASSWORD: $DB_PASSWORD
       MYSQL_USER: $DB_USERNAME
     ports:
-      - 127.0.0.1:$DB_LOCAL_PORT:$DB_PORT
+      - $DB_LOCAL_PORT:$DB_PORT
     volumes:
       - database-vlm:/var/lib/mysql:rw
       - ./database:/docker-entrypoint-initdb.d/
@@ -23,12 +23,12 @@ services:
 
   # api:
   #   container_name: api
-  #   depends_on:
-  #     - database
+  #   # depends_on:
+  #   #   - database
   #   build:
   #     context: .
   #     dockerfile: ./apps/api/Dockerfile
-  #   restart: unless-stopped
+  #   restart: always
   #   env_file:
   #     - ./.env
   #   expose:
@@ -42,7 +42,7 @@ services:
   #     - DB_PASSWORD=$DB_PASSWORD
   #     - DB_NAME=$DB_NAME
   #   volumes:
-  #     - ./app:/app
+  #     - ./api:/api
   #   networks:
   #     - default
 
