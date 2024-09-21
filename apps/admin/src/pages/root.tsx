@@ -1,8 +1,14 @@
 import Sidebar from "@/components/Sidebar";
 import { Toaster } from "@/components/ui/toaster";
-import { Outlet } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 
-function Root() {
+export interface RootProps {
+  isAuthenticated: boolean;
+}
+function Root({ isAuthenticated }: RootProps) {
+  if (!localStorage.getItem("access_token"))
+    return <Navigate to="/login" replace />;
+
   return (
     <>
       <Sidebar></Sidebar>

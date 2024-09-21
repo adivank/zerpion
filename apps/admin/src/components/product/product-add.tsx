@@ -11,7 +11,14 @@ import { Button } from "../ui/button";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Form, FormControl, FormField, FormItem, FormLabel } from "../ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "../ui/form";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { DialogDescription } from "@radix-ui/react-dialog";
@@ -51,12 +58,14 @@ function AddProduct({ setProducts, products }: AddProductProps) {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const formData = new FormData(document.querySelector("form")!);
+    console.log(localStorage.getItem("access_token"));
     await axios({
       method: "post",
       url: "http://localhost:3001/product",
       data: formData,
       headers: {
         "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
       },
     })
       .then((res) => {
@@ -99,6 +108,7 @@ function AddProduct({ setProducts, products }: AddProductProps) {
                     <FormControl>
                       <Input placeholder="Sunglasses" {...field}></Input>
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               ></FormField>
@@ -114,6 +124,7 @@ function AddProduct({ setProducts, products }: AddProductProps) {
                         {...field}
                       ></Textarea>
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               ></FormField>
@@ -126,6 +137,7 @@ function AddProduct({ setProducts, products }: AddProductProps) {
                     <FormControl>
                       <Input placeholder="Category" {...field}></Input>
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               ></FormField>
@@ -138,6 +150,7 @@ function AddProduct({ setProducts, products }: AddProductProps) {
                     <FormControl>
                       <Input {...field} type="number"></Input>
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               ></FormField>
@@ -157,6 +170,7 @@ function AddProduct({ setProducts, products }: AddProductProps) {
                         }
                       ></Input>
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               ></FormField>
@@ -177,6 +191,7 @@ function AddProduct({ setProducts, products }: AddProductProps) {
                         }
                       ></Input>
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               ></FormField>

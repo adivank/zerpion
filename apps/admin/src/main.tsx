@@ -8,11 +8,23 @@ import { Orders } from "./pages/orders.tsx";
 import { Customers } from "./pages/customers.tsx";
 import { Analytics } from "./pages/analytics.tsx";
 import { ProductDetail } from "./pages/products/product-detail.tsx";
+import { LoginRegister } from "./pages/login-register.tsx";
+
+const isAuthenticated = () => {
+  if (!localStorage.getItem("access_token")) return false;
+
+  return true;
+};
 
 const router = createBrowserRouter([
   {
+    path: "/login",
+    element: <LoginRegister />,
+    index: true,
+  },
+  {
     path: "/",
-    element: <Root />,
+    element: <Root isAuthenticated={isAuthenticated()} />,
     children: [
       { path: "products", element: <Products /> },
       { path: "products/:productId", element: <ProductDetail /> },
@@ -20,6 +32,10 @@ const router = createBrowserRouter([
       { path: "customers", element: <Customers /> },
       { path: "analytics", element: <Analytics /> },
     ],
+  },
+  {
+    path: "*",
+    element: isAuthenticated() ? <p>Not Found</p> : <LoginRegister />,
   },
 ]);
 

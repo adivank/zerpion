@@ -7,27 +7,27 @@ import {
   Param,
   Delete,
   UseInterceptors,
-  UploadedFile,
   UploadedFiles,
+  UseGuards,
 } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
-import {
-  FileFieldsInterceptor,
-  FileInterceptor,
-  FilesInterceptor,
-} from '@nestjs/platform-express';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { editFileName, imageFileFilter } from 'src/utils/file-upload.utils';
 import { ProductEntity } from './entities/product.entity';
 import { ProductThumbnailEntity } from './entities/product-thumbnail.entity';
 import { ProductImageEntity } from './entities/product-image.entity';
+import { Public } from 'src/auth/public/public-constants';
+import { AuthGuard } from '@nestjs/passport';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('product')
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Post()
   @UseInterceptors(
     FileFieldsInterceptor(
@@ -53,6 +53,7 @@ export class ProductController {
     @UploadedFiles()
     files: { images: Express.Multer.File[]; thumbnail: Express.Multer.File },
   ) {
+    console.log('helo');
     const { name, description, price, category } = body;
     const thumbnailPath = files.thumbnail[0].path;
     const thumbnailName = files.thumbnail[0].filename;
@@ -83,6 +84,7 @@ export class ProductController {
     return this.productService.findAll();
   }
 
+  @Public()
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.productService.findOne(id);

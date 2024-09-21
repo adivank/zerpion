@@ -11,10 +11,14 @@ import { JwtStrategy } from './strategies/jwt.strategy';
   imports: [
     UserModule,
     PassportModule,
-    JwtModule.register({
-      secret: process.env.AUTH_SECRET,
-      signOptions: { expiresIn: '60s' }
-    })
+    JwtModule.registerAsync({
+      useFactory: () => {
+        return {
+          secret: process.env.AUTH_SECRET,
+          signOptions: { expiresIn: '1d' },
+        };
+      },
+    }),
   ],
   controllers: [AuthController],
   providers: [AuthService, LocalStrategy, JwtStrategy],

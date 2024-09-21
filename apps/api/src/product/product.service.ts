@@ -27,8 +27,12 @@ export class ProductService {
     return this.productsRepository.findAndCount();
   }
 
-  findOne(id: string) {
-    return this.productsRepository.findOneBy({ id });
+  async findOne(id: string) {
+    const foundProduct = await this.productsRepository.findOneBy({ id });
+    if (!foundProduct)
+      throw new NotFoundException("We couldn't find that specific product");
+
+    return foundProduct;
   }
 
   update(id: number, updateProductDto: UpdateProductDto) {

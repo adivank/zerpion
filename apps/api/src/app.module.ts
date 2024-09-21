@@ -41,8 +41,8 @@ import { ConfigModule } from '@nestjs/config';
     AppService,
     // {
     //   provide: APP_GUARD,
-    //   useClass: JwtAuthGuard
-    // }
+    //   useClass: JwtAuthGuard,
+    // },
   ],
 })
 export class AppModule {}
