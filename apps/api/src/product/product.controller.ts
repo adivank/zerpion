@@ -53,7 +53,6 @@ export class ProductController {
     @UploadedFiles()
     files: { images: Express.Multer.File[]; thumbnail: Express.Multer.File },
   ) {
-    console.log('helo');
     const { name, description, price, category } = body;
     const thumbnailPath = files.thumbnail[0].path;
     const thumbnailName = files.thumbnail[0].filename;

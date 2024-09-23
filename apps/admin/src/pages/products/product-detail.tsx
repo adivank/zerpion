@@ -49,7 +49,7 @@ function ProductDetailField({
         {type === "images" && (
           <div className="grid grid-cols-3 gap-2">
             {assets?.map((image) => (
-              <img src={image.url} alt="" />
+              <img src={image.url} alt="" key={image.url} />
             ))}
           </div>
         )}

@@ -67,28 +67,6 @@ const Sidebar = ({ className }: SidebarProps) => {
             </TooltipProvider>
           </NavLink>
         ))}
-        {/* <NavLink to={"/"} className={}>
-          <FontAwesomeIcon className="mx-auto block" icon={faHouse} />
-        </NavLink>
-        <NavLink
-          to={"/products"}
-          className={({ isActive }) =>
-            isActive
-              ? "py-4 bg-slate-200 rounded-sm mx-3"
-              : "py-4 hover:bg-slate-100 rounded-sm mx-3"
-          }
-        >
-          <FontAwesomeIcon className="mx-auto block" icon={faCartShopping} />
-        </NavLink>
-        <div className="py-4 hover:bg-slate-100 rounded-sm mx-3">
-          <FontAwesomeIcon className="mx-auto block" icon={faBoxesStacked} />
-        </div>
-        <div className="py-4 hover:bg-slate-100 rounded-sm mx-3">
-          <FontAwesomeIcon className="mx-auto block" icon={faUsers} />
-        </div>
-        <div className="py-4 hover:bg-slate-100 rounded-sm mx-3">
-          <FontAwesomeIcon className="mx-auto block" icon={faChartLine} />
-        </div> */}
       </div>
       <div className="py-4 hover:bg-slate-100 rounded-sm mx-3 group mt-auto mb-4">
         <FontAwesomeIcon

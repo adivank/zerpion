@@ -9,12 +9,7 @@ import { Customers } from "./pages/customers.tsx";
 import { Analytics } from "./pages/analytics.tsx";
 import { ProductDetail } from "./pages/products/product-detail.tsx";
 import { LoginRegister } from "./pages/login-register.tsx";
-
-const isAuthenticated = () => {
-  if (!localStorage.getItem("access_token")) return false;
-
-  return true;
-};
+// import { checkLoggedIn } from "./utils/check-loggedin.ts";
 
 const router = createBrowserRouter([
   {
@@ -24,7 +19,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/",
-    element: <Root isAuthenticated={isAuthenticated()} />,
+    element: <Root />,
     children: [
       { path: "products", element: <Products /> },
       { path: "products/:productId", element: <ProductDetail /> },
@@ -33,10 +28,10 @@ const router = createBrowserRouter([
       { path: "analytics", element: <Analytics /> },
     ],
   },
-  {
-    path: "*",
-    element: isAuthenticated() ? <p>Not Found</p> : <LoginRegister />,
-  },
+  // {
+  //   path: "*",
+  //   element: checkLoggedIn() ? <p>Not Found</p> : <LoginRegister />,
+  // },
 ]);
 
 createRoot(document.getElementById("root")!).render(
